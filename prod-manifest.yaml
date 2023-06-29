@@ -3,28 +3,28 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: stedi-prod
+  name: prod-stedi-levi
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: stedi-prod
+      app: prod-stedi-levi
   template:
     metadata:
       labels:
-        app: stedi-prod
+        app: prod-stedi-levi
     spec:
       containers:
-        - name: stedi-prod
-          image: gcr.io/cubs-consulting/stedi
+        - name: prod-stedi-levi
+          image: gcr.io/cubs-consulting/stedi  #Replacing this later with new artifact
           env:
             - name: REDIS_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: redis-secrets-prod
+                  name: redis-secrets-levi
                   key: REDIS_PASS
             - name: REDIS_HOST
-              value: "redis-stedi-prod"
+              value: "redis-stedi-levi"
             - name: REDIS_PORT
               value: "6379"
             - name: REDIS_DB
@@ -50,23 +50,10 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: stedi-prod-service
+  name: prod-stedi-levi-nodeport
 spec:
   selector:
-    app: stedi-prod
-  ports:
-    - protocol: TCP
-      port: 80
-      targetPort: 4567
-
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: stedi-prod-nodeport
-spec:
-  selector:
-    app: stedi-prod
+    app: prod-stedi-levi
   type: NodePort
   ports:
     - port: 80
@@ -77,8 +64,8 @@ kind: Ingress
 metadata:
   name: stedi-prod-ingress
   annotations:
-    kubernetes.io/ingress.global-static-ip-name: stedi-prod-public
-    networking.gke.io/managed-certificates: stedi-prod-certificate
+    kubernetes.io/ingress.global-static-ip-name: prod-stedi-levi-public
+    networking.gke.io/managed-certificates: prod-stedi-levi-certificate
     # kubernetes.io/ingress.allow-http: "false"
 spec:
   rules:
@@ -88,15 +75,15 @@ spec:
         pathType: Prefix
         backend:
           service:
-            name: stedi-prod-nodeport
+            name: prod-stedi-levi-nodeport
             port:
               number: 80
 ---
 apiVersion: networking.gke.io/v1
 kind: ManagedCertificate
 metadata:
-  name: stedi-prod-certificate
+  name: prod-stedi-levi-certificate # this needs to match line 68
 spec:
   domains:
-    - stedi.me
+    - levi.cit262.com #This is a DNS record that has not been created yet - We need to create that first
     
