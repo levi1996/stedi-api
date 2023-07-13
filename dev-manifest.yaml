@@ -31,7 +31,7 @@ spec:
 # The name of the container is specified below      
         - name: dev-stedi-levi
 # The image is a prebuilt file containing the operating system        
-          image: us-docker.pkg.dev/unstable-unicorns-389016/levi-stedi-api:latest #image needs to be artifact registry new repository
+          image: us-docker.pkg.dev/unstable-unicorns-389016/levi-stedi-api/stedi-api:latest #image needs to be artifact registry new repository
           env:
             - name: REDIS_PASSWORD
               valueFrom:
