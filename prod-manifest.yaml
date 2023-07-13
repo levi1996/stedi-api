@@ -21,7 +21,7 @@ spec:
             - name: REDIS_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: redis-secret-levi
+                  name: redis-secrets-levi
                   key: REDIS_PASS
             - name: REDIS_HOST
               value: "redis-stedi-levi"
