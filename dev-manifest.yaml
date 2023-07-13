@@ -31,7 +31,7 @@ spec:
 # The name of the container is specified below      
         - name: dev-stedi-levi
 # The image is a prebuilt file containing the operating system        
-          image: gcr.io/cubs-consulting/stedi:latest #image needs to be artifact registry new repository
+          image: us-docker.pkg.dev/unstable-unicorns-389016/levi-stedi-api:latest #image needs to be artifact registry new repository
           env:
             - name: REDIS_PASSWORD
               valueFrom:
@@ -46,18 +46,11 @@ spec:
               value: "0"
             - name: KAFKA_BROKER
               value: "localhost:9092"
-            - name: TWILIO_ACCOUNT_SID
-              valueFrom:
-                secretKeyRef:
-                  name: twilio-dev
-                  key: twilio_account_sid
             - name: TWILIO_AUTH_TOKEN
               valueFrom:
                 secretKeyRef:
                   name: levi-twilio-dev
                   key: twilio_token
-            - name: TWILIO_PHONE
-              value: "+17146778438"
 # The ports is a list of tcp ports the pod listens on
           ports:
 # ContainerPort is a specific port the pod listens on
